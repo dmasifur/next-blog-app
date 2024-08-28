@@ -10,7 +10,14 @@ const LoadDb = async () => {
 LoadDb();
 
 export async function GET(request) {
-  return NextResponse.json({ msg: "Api working" });
+  const blogId = request.nextUrl.searchParams.get("id");
+  if (blogId) {
+    const blog = await BlogModel.findById(blogId);
+    return NextResponse.json(blog);
+  } else {
+    const blogs = await BlogModel.find({});
+    return NextResponse.json({ blogs });
+  }
 }
 
 export async function POST(request) {
